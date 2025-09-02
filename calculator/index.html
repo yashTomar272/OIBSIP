@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Calculator</title>
+    <link rel="stylesheet" href="style.css"/>
+
+    
+</head>
+<body>
+    <div class="calculator">
+        <div class="display">
+            <div class="display-1" id="previous-output"></div>
+            <div class="display-2" id="current-output">0</div>
+        </div>
+        <div class="buttons">
+            <button class="clear-btn" onclick="clearAll()">AC</button>
+            <button onclick="deleteLastChar()">DEL</button>
+            <button class="operator" onclick="appendOperator('/')">/</button>
+            <button class="operator" onclick="appendOperator('*')">*</button>
+            
+            <button onclick="appendNumber('7')">7</button>
+            <button onclick="appendNumber('8')">8</button>
+            <button onclick="appendNumber('9')">9</button>
+            <button class="operator" onclick="appendOperator('-')">-</button>
+            
+            <button onclick="appendNumber('4')">4</button>
+            <button onclick="appendNumber('5')">5</button>
+            <button onclick="appendNumber('6')">6</button>
+            <button class="operator" onclick="appendOperator('+')">+</button>
+            
+            <button onclick="appendNumber('1')">1</button>
+            <button onclick="appendNumber('2')">2</button>
+            <button onclick="appendNumber('3')">3</button>
+            <button class="equals" onclick="calculate()">=</button>
+            
+            <button class="zero" onclick="appendNumber('0')">0</button>
+            <button onclick="appendNumber('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        let currentOutput = '0';
+        let previousOutput = '';
+        console.log("previousOutput",previousOutput)
+        let operation = undefined;
+        let resetScreen = false;
+        console.log("resetScreen",resetScreen)
+
+
+        const currentOutputElement = document.getElementById('current-output');
+                console.log("currentOutputElement",currentOutputElement)
+
+        const previousOutputElement = document.getElementById('previous-output');
+                console.log("previousOutputElement",previousOutputElement)
+
+        function appendNumber(number) {
+            if (currentOutput === '0' || resetScreen) {
+                if (number === '.') {
+                    currentOutput = '0.';
+                } else {
+                    currentOutput = number;
+                }
+                resetScreen = false;
+            } else {
+                if (number === '.' && currentOutput.includes('.')) return;
+                currentOutput += number;
+            }
+            updateDisplay();
+        }
+
+        function appendOperator(operator) {
+            if (operation !== undefined) calculate();
+            operation = operator;
+            previousOutput = currentOutput;
+            currentOutput = '0';
+            resetScreen = false;
+            updateDisplay();
+        }
+
+        function calculate() {
+            let computation;
+            const prev = parseFloat(previousOutput);
+            const current = parseFloat(currentOutput);
+            
+            if (isNaN(prev) || isNaN(current)) return;
+            
+            switch (operation) {
+                case '+':
+                    computation = prev + current;
+                    break;
+                case '-':
+                    computation = prev - current;
+                    break;
+                case '*':
+                    computation = prev * current;
+                    break;
+                case '/':
+                    if (current === 0) {
+                        computation = 'Error';
+                    } else {
+                        computation = prev / current;
+                    }
+                    break;
+                default:
+                    return;
+            }
+            
+            currentOutput = computation;
+            operation = undefined;
+            previousOutput = '';
+            resetScreen = true;
+            updateDisplay();
+        }
+
+        function clearAll() {
+            currentOutput = '0';
+            previousOutput = '';
+            operation = undefined;
+            updateDisplay();
+        }
+
+        function deleteLastChar() {
+            if (currentOutput.length === 1) {
+                currentOutput = '0';
+            } else {
+                currentOutput = currentOutput.slice(0, -1);
+            }
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            currentOutputElement.innerText = currentOutput;
+            if (operation != undefined) {
+                previousOutputElement.innerText = 
+                    `${previousOutput} ${operation}`;
+            } else {
+                previousOutputElement.innerText = '';
+            }
+        }
+    </script>
+</body>
+</html>
+

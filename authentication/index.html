@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Authentication System</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Authentication Container -->
+    <div id="auth-container" class="container">
+        <div class="logo">
+            <img src="https://tse1.mm.bing.net/th/id/OIP.7nsftb5saEcniWxb-4-0hgHaEH?r=0&cb=thfvnext&w=900&h=500&rs=1&pid=ImgDetMain&o=7&rm=3" alt="SecureAuth logo with shield icon representing security" />
+        </div>
+        
+        <div class="auth-toggle">
+            <button id="login-tab" class="active">Login</button>
+            <button id="register-tab">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form">
+            <div class="message hidden" id="login-message"></div>
+            
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" required placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required placeholder="Enter your password" minlength="6">
+            </div>
+            
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- Registration Form -->
+        <form id="register-form" class="auth-form hidden">
+            <div class="message hidden" id="register-message"></div>
+            
+            <div class="form-group">
+                <label for="register-name">Full Name</label>
+                <input type="text" id="register-name" required placeholder="Enter your full name">
+            </div>
+            
+            <div class="form-group">
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" required placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label for="register-password">Password</label>
+                <input type="password" id="register-password" required placeholder="Create a password (min 6 characters)" minlength="6">
+            </div>
+            
+            <div class="form-group">
+                <label for="register-confirm">Confirm Password</label>
+                <input type="password" id="register-confirm" required placeholder="Confirm your password" minlength="6">
+            </div>
+            
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <!-- Dashboard (Secured Content) -->
+    <div id="dashboard" class="container hidden">
+        <div class="dashboard">
+            <div class="logo">
+            <img src="https://tse1.mm.bing.net/th/id/OIP.7nsftb5saEcniWxb-4-0hgHaEH?r=0&cb=thfvnext&w=900&h=500&rs=1&pid=ImgDetMain&o=7&rm=3" alt="SecureAuth logo with shield icon representing security" />
+        </div>
+            <h1>Welcome, <span id="dashboard-name"></span>!</h1>
+            
+            <div class="dashboard-content">
+                <p>You have successfully logged into the secure area.</p>
+                <p>This page would typically display sensitive information and functionality that should only be accessible to authenticated users.</p>
+            </div>
+            
+            <button id="logout-btn" class="btn-logout">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const authContainer = document.getElementById('auth-container');
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const loginMessage = document.getElementById('login-message');
+        const registerMessage = document.getElementById('register-message');
+        const dashboard = document.getElementById('dashboard');
+        const dashboardName = document.getElementById('dashboard-name');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // Form toggling
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+
+        // User data in localStorage simulation
+        const users = JSON.parse(localStorage.getItem('users')) || {};
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        // Check authentication status on page load
+        checkAuthStatus();
+
+        function checkAuthStatus() {
+            if (currentUser) {
+                showDashboard();
+            } else {
+                showAuthForms();
+            }
+        }
+
+        function showDashboard() {
+            authContainer.classList.add('hidden');
+            dashboard.classList.remove('hidden');
+            dashboardName.textContent = currentUser.name;
+        }
+
+        function showAuthForms() {
+            authContainer.classList.remove('hidden');
+            dashboard.classList.add('hidden');
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+        }
+
+        // Registration form handling
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = sanitizeInput(document.getElementById('register-name').value);
+            const email = sanitizeInput(document.getElementById('register-email').value);
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm').value;
+            
+            // Validation
+            if (password !== confirmPassword) {
+                showMessage(registerMessage, 'Passwords do not match', 'error');
+                return;
+            }
+            
+            if (users[email]) {
+                showMessage(registerMessage, 'Email already registered', 'error');
+                return;
+            }
+            
+            // Create new user
+            users[email] = {
+                name,
+                email,
+                password: btoa(password) // Basic "encryption" - NOT secure, just for demo
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Show success message
+            showMessage(registerMessage, 'Registration successful! Please login.', 'success');
+            // Switch to login form
+            loginTab.click();
+            // Clear form
+            registerForm.reset();
+        });
+
+        // Login form handling
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = sanitizeInput(document.getElementById('login-email').value);
+            const password = document.getElementById('login-password').value;
+            
+            const user = users[email];
+            
+            // Check credentials
+            if (!user || atob(user.password) !== password) {
+                showMessage(loginMessage, 'Invalid email or password', 'error');
+                return;
+            }
+            
+            // Login successful
+            currentUser = {
+                name: user.name,
+                email: user.email
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showDashboard();
+        });
+
+        // Logout handling
+        logoutBtn.addEventListener('click', () => {
+            showAuthForms();
+        });
+
+        // Helper functions
+        function showMessage(element, text, type) {
+            element.textContent = text;
+            element.classList.remove('hidden', 'error', 'success');
+            element.classList.add(type);
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                element.classList.add('hidden');
+            }, 5000);
+        }
+
+        function sanitizeInput(input) {
+            // Basic sanitization to prevent XSS
+            return input.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+    </script>
+</body>
+</html>
+

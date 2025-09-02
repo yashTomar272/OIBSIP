@@ -1,0 +1,97 @@
+        body {
+            background-color: #f7fafc;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #2d3748;
+        }
+        p {
+            color: #4a5568;
+        }
+        .input-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: calc(100% - 100px);
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            outline: none;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2b6cb0;
+        }
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            background-color: white;
+        }
+        .task-item.completed {
+            opacity: 0.7;
+        }
+        .task-content {
+            flex-grow: 1;
+            margin-left: 10px;
+        }
+        .task-actions {
+            display: flex;
+            gap: 5px;
+        }
+        .task-meta {
+            font-size: 0.8em;
+            color: #a0aec0;
+        }
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .summary-item {
+            text-align: center;
+            padding: 20px;
+            background-color: #edf2f7;
+            border-radius: 8px;
+            flex: 1;
+            margin: 0 5px;
+        }
+        .summary-item h3 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #a0aec0;
+            margin-top: 20px;
+        }
