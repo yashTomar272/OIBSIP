@@ -3,7 +3,6 @@ const http = require('http');
 const cors = require('cors');
 const morgan = require('morgan');
 require("dotenv").config();
-const { Server } = require('socket.io');
 const connectDB = require('./src/config/db');
 const initStockMonitor = require('./src/utils/stockMonitor');
 
@@ -13,17 +12,10 @@ const server = http.createServer(app);
 
 app.use(cors());
 
-app.set('io', io);
 
-io.on('connection', (socket) => {
-  // frontend: socket.emit('join', userId)
-  socket.on('join', (userId) => {
-    if (userId) socket.join(String(userId));
-  });
-});
+
 
 // middlewares
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json({ limit: '1mb' }));
 app.use(morgan('dev'));
 
