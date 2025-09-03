@@ -148,7 +148,7 @@ const handleBuyNow = async () => {
       key: process.env.REACT_APP_RAZORPAY_KEY_ID || "rzp_test_R8qd9nDsSFaeqC", // optional env on frontend
       amount,
       currency: "INR",
-      name: "Buy Smart",
+      name: "pizzaHub",
       description: "Pizza Order",
       order_id: data.order.id,
       handler: async function (response) {
@@ -183,11 +183,12 @@ const handleBuyNow = async () => {
           setProcessingPayment(false);
         },
       },
-      prefill: {
-        name: JSON.parse(localStorage.getItem("user") || "{}")?.name || "User",
-        email: JSON.parse(localStorage.getItem("user") || "{}")?.email || "",
-      },
-      theme: { color: "#F37254" },
+     prefill: {
+  name: "",
+  email: "",
+  contact: "1234567890"   
+},
+      theme: { color: "#54c1f3ff" },
     };
 
     const rzp = new window.Razorpay(options);

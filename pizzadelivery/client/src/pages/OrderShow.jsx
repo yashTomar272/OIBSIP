@@ -41,7 +41,7 @@ useEffect(() => {
 
             {orders.map((order, i) => (
   <div key={i} className='User_Second d-flex flex-column mb-2'
-       style={{borderRadius:"9px",border:"2px solid #e6e5e5",maxWidth:"500px"}}>
+       style={{borderRadius:"9px",border:"2px solid #e6e5e5",maxWidth:"600px"}}>
     
     {/* Order Header */}
     <div className="d-flex flex-md-row flex-column justify-content-around gap-2 p-3 BACK"
@@ -73,7 +73,7 @@ useEffect(() => {
         <span style={{color:"blue"}}>{order.status}</span>
       )}
       {order.status=== "OUT_FOR_DELIVERY" &&(
-        <span style={{color:"pink"}}>{order.status}</span>
+        <span style={{color:"#ff8800"}}>{order.status}</span>
       )}
       {order.status=== "DELIVERED" &&(
         <span style={{color:"green"}}>{order.status}</span>
