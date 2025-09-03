@@ -9,7 +9,7 @@ export default function Settings() {
   useEffect(() => {
     async function fetchLogs() {
       try {
-        const res = await axios.get("http://localhost:8000/api/email/logs"); // 🔹 backend API
+        const res = await axios.get(`${process.env.REACT_APP_URL}/email/logs`); // 🔹 backend API
         setLogs(res.data);
       } catch (err) {
         console.error("Failed to fetch logs", err);

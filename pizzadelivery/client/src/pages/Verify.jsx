@@ -11,7 +11,7 @@ const Verify = () => {
 
   const handleVerify = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/auth/verify-email?token=${token}`);
+      const res = await axios.get(`${process.env.REACT_APP_URL}/auth/verify-email?token=${token}`);
       alert(res.data.message);  // ✅ "Email verified"
       navigate("/login")
     } catch (err) {
