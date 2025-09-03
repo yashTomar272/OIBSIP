@@ -11,13 +11,8 @@ const initStockMonitor = require('./src/utils/stockMonitor');
 const app = express();
 const server = http.createServer(app);
 
-// Socket.io
-const io = new Server(server, {
-  cors: {
-    origin: process.env.CLIENT_URL,
-    methods: ['GET','POST','PUT','DELETE']
-  }
-});
+app.use(cors());
+
 app.set('io', io);
 
 io.on('connection', (socket) => {

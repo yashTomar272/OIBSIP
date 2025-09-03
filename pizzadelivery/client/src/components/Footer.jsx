@@ -58,7 +58,7 @@ const Footer = () => {
 
         <div className="text-center mt-3">
           <small>
-            Copyright 2025, PizzaHub Hub of Pizza, All rights reserved.
+            Copyright 2025, PizzaHub Hub of Pizza,(Made By Yash Kumar)
           </small>
         </div>
       </div>

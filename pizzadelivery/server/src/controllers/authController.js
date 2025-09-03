@@ -21,7 +21,7 @@ exports.register = async (req, res) => {
 
   // email verify token
   const verifyToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-  const link = `${process.env.CLIENT_URL}/Verify?token=${verifyToken}`;
+  const link = `https://pizzadelivery-ashy.vercel.app/Verify?token=${verifyToken}`;
   await sendEmail({
     to: email,
     subject: 'Verify your email',
@@ -74,7 +74,7 @@ exports.forgot = async (req, res) => {
   user.resetTokenExp = new Date(Date.now() + 60 * 60 * 1000);
   await user.save();
 
-  const link = `${process.env.CLIENT_URL}/ResetPassword?token=${resetToken}`;
+  const link = `https://pizzadelivery-ashy.vercel.app/ResetPassword?token=${resetToken}`;
   await sendEmail({ to: email, subject: 'Reset your password', html: `<p> Reset your password this is your Reset link: <a href="${link}">Reset</a></p>` });
   res.json({ message: 'Reset link sent if email exists' });
 };
