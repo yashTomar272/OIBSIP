@@ -127,24 +127,9 @@ strong{
 }
 
 
-/* Table responsive */
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;  /* horizontal scroll allow */
-}
-.table-wrapper .tablee {
-  min-width: 500px;  /* chhoti screen par bhi layout na tute */
-}
 
 
-/* Tables responsive */
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto; /* horizontal scroll allow karega */
-}
-.table-wrapper .tablee {
-  min-width: 600px; /* chhoti screen par bhi layout na tute */
-}
+
 
 /* Responsive for Settings Page */
 @media (max-width: 768px) {
@@ -196,6 +181,11 @@ strong{
 }
 .table-wrapper .tablee {
   min-width: 600px; 
+}
+.table-wrapperr{
+max-height: 700px;
+  width: 100%;
+  overflow-x: auto;
 }
 .btn-primaryy { border-color: #1e255f; background: #7b83cf; }
 .btn-primaryy:hover { background: #4bc7ec; }

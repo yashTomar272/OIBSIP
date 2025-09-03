@@ -11,6 +11,7 @@ const STATUS = [
 export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedStatus, setSelectedStatus] = useState({}); // 🔥 dropdown ka temporary value
 
   const token = localStorage.getItem("token");
 
@@ -25,6 +26,13 @@ export default function Orders() {
           }
         );
         setOrders(res.data);
+
+        // default selectedStatus me bhi set karo
+        const defaults = {};
+        res.data.forEach((o) => {
+          defaults[o._id] = o.status;
+        });
+        setSelectedStatus(defaults);
       } catch (err) {
         console.error("Error fetching orders:", err);
       } finally {
@@ -43,12 +51,14 @@ export default function Orders() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // frontend me update
+      const updatedOrder = res.data;
+
+      // frontend me bhi update karo
       setOrders((prev) =>
-        prev.map((o) => (o._id === id ? { ...o, status: newStatus } : o))
+        prev.map((o) => (o._id === id ? updatedOrder : o))
       );
 
-      console.log("Updated:", res.data);
+      console.log("Updated:", updatedOrder);
     } catch (err) {
       console.error("Error updating status:", err);
     }
@@ -57,7 +67,6 @@ export default function Orders() {
   const openOrders = orders.filter((o) => o.status !== "DELIVERED");
   const deliveredOrders = orders.filter((o) => o.status === "DELIVERED");
 
-console.log("deliveredOrders",deliveredOrders)
   return (
     <div className="grid grid-2">
       {/* Open Orders */}
@@ -95,15 +104,12 @@ console.log("deliveredOrders",deliveredOrders)
                     <td>
                       <select
                         className="select"
-                        value={order.status}
+                        value={selectedStatus[order._id] || order.status}
                         onChange={(e) =>
-                          setOrders((prev) =>
-                            prev.map((o) =>
-                              o._id === order._id
-                                ? { ...o, status: e.target.value }
-                                : o
-                            )
-                          )
+                          setSelectedStatus((prev) => ({
+                            ...prev,
+                            [order._id]: e.target.value,
+                          }))
                         }
                       >
                         {STATUS.map((s) => (
@@ -117,7 +123,9 @@ console.log("deliveredOrders",deliveredOrders)
                     <td>
                       <button
                         className="btn"
-                        onClick={() => updateStatus(order._id, order.status)}
+                        onClick={() =>
+                          updateStatus(order._id, selectedStatus[order._id])
+                        }
                       >
                         CHANGE
                       </button>
@@ -162,29 +170,30 @@ console.log("deliveredOrders",deliveredOrders)
                   <tr key={order._id}>
                     <td>{order._id}</td>
                     <td>{order.user?.name || "Unknown"}</td>
-                    <td> <span className={`status ${order.status}`}>
+                    <td>
+                      <span className={`status ${order.status}`}>
                         {order.status}
-                      </span></td>
-                   <td>
-  {order.items && order.items.length > 0 ? (
-    order.items.map((item, idx) => (
-      <div key={idx} className="text-sm">
-        <strong>Base:</strong> {item.base}, 
-        <strong> Sauce:</strong> {item.sauce}, 
-        <strong> Cheese:</strong> {item.cheese}
-        {item.veggies && item.veggies.length > 0 && (
-          <>
-            , <strong>Veggies:</strong> {item.veggies.join(", ")}
-          </>
-        )}
-      </div>
-    ))
-  ) : (
-    "No items"
-  )}
-</td>
-
-
+                      </span>
+                    </td>
+                    <td>
+                      {order.items && order.items.length > 0 ? (
+                        order.items.map((item, idx) => (
+                          <div key={idx} className="text-sm">
+                            <strong>Base:</strong> {item.base}, 
+                            <strong> Sauce:</strong> {item.sauce}, 
+                            <strong> Cheese:</strong> {item.cheese}
+                            {item.veggies && item.veggies.length > 0 && (
+                              <>
+                                , <strong>Veggies:</strong>{" "}
+                                {item.veggies.join(", ")}
+                              </>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        "No items"
+                      )}
+                    </td>
                     <td className="small">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </td>

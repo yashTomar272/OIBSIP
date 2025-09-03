@@ -24,13 +24,14 @@ export default function Settings() {
   }, []);
 
   return (
+       
     <div className="grid grid-2 settings-grid" style={{ gap: 20 }}>
       {/* Right card */}
       <div className="card" >
         <strong>📩 Notification Log (sent emails)</strong>
 
         {/* 👇 Scrollable tbody */}
-        <div className="table-wrapper" >
+        <div className="table-wrapperr" >
           <table className="tablee">
             <thead>
               <tr>
