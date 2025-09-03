@@ -102,7 +102,7 @@ const Login = () => {
                          )}
                          </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <a href="/forgot-password" className='text-decoration-none ' style={{color:"blue",fontSize:"14px"}}>Forgot Password?</a>
+              <a href="/ForgotPassword" className='text-decoration-none ' style={{color:"blue",fontSize:"14px"}}>Forgot Password?</a>
             </div>
             <div style={{padding:"5px",width:"100%",backgroundColor:"blue",borderRadius:"60px",height:"55px",display:"flex",justifyContent:"center",alignItems:"center"}}>
               <button type="submit" className='text-white' style={{border:"none",backgroundColor:"transparent",width:"100%",height:"100%",fontSize:"19px",fontWeight:"bold"}}>Login</button> 
