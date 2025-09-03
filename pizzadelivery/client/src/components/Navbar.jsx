@@ -27,7 +27,7 @@ const Navbar = () => {
         <ul className='Nav_ul p-0 m-0 position-relative' style={{ display: "flex", gap: "20px", listStyle: "none" }}>
           <li className='Nav_li DALJU' style={{ position: "relative" }} onClick={() => navigate("/Cart")}>
             <FaShoppingBag className='Nav_icon position-relative' />
-            <span className='position-absolute translate-middle badge  bg-danger Small_li DALJU' style={{ fontSize: '12px', top: "7px", right: "10px",height:"25px",aspectRatio:"1",borderRadius:"50%" }}>3</span>
+            
           </li>
       <li onClick={()=>navigate("/Profile")} className="Nav_li d-flex align-items-center justify-content-center d-none d-lg-flex">
   <FaUser className="Nav_icon" />
