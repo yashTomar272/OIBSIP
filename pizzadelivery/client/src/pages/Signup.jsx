@@ -40,12 +40,10 @@ const Signup = () => {
         values
       );
 
-      if (response.status === 200) {
-        toast.success(response.data.message);
-        navigate("/login");
-      } else {
-        toast.error(response.data.message);
-      }
+      if (response.status === 201) {
+  toast.success(response.data.message);
+  navigate("/login");
+}
     } catch (err) {
       console.error("Error:", err);
       toast.error(err.response?.data?.message || "Something went wrong");
